@@ -12,7 +12,7 @@ class Intern extends Employee {
     }
     // Overridden to return 'Intern'
     getRole() {
-        return 'Intern'
+        return "Intern"
     };
 
 

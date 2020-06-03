@@ -9,13 +9,42 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
+const employeesArray = [];
 
 
+function rerun() {
+    inquirer.prompt([
+        {
+            type: "list",
+            message: "Would you like to add additional employee?",
+            choices: ["Yes", "No"],
+            name: "add",
+        }
+    ])
+        .then(function (response) {
+            // console.log(response)
+            if (response.add === "Yes") {
+                newEmployee()
+            } else {
+
+                const teamHTML = render(employeesArray)
+                fs.writeFile(outputPath, teamHTML, function (err) {
+
+                    if (err) {
+                        return console.log(err);
+                    }
+                    console.log("Success!");
+
+                })
+            }
+        }
+        );
+}
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 
 //array of questions
-function prompt() {
+function newEmployee() {
     return inquirer
         .prompt([
 
@@ -45,7 +74,7 @@ function prompt() {
         .then(function (response) {
             console.log(response)
             if (response.role === "Employee") {
-                console.log("true");
+                // console.log("true");
             }
             if (response.role === "Manager") {
                 // //manager
@@ -55,6 +84,10 @@ function prompt() {
                     message: "What is the office number?",
                     name: "officeNumber",
                 }])
+                    .then((response) => {
+                        const manager = new Manager(response.name, response.email, response.id, response.officeNumber)
+                        employeesArray.push(manager);
+                    })
 
             }
             if (response.role === "Engineer") {
@@ -64,7 +97,11 @@ function prompt() {
                     message: "What is your github?",
                     name: "github",
                 }])
-
+                    .then((response) => {
+                        const engineer = new engineer(response.name, response.email, response.id, response.github)
+                        employeesArray.push(engineer);
+                        rerun()
+                    })
             }
             if (response.role === "Intern") {
                 // //intern
@@ -73,12 +110,19 @@ function prompt() {
                     message: "What is the name of your school?",
                     name: "school",
                 }])
-
+                    .then((response) => {
+                        const intern = new Intern(response.name, response.email, response.id, response.school)
+                        employeesArray.push(intern);
+                        rerun()
+                        console.log(employeesArray)
+                    })
             }
-        })
-}
-prompt()
 
+
+        })
+};
+// prompt()
+newEmployee();
 
 
 
