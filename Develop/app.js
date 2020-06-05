@@ -71,8 +71,10 @@ function newEmployee() {
         }
     ])
         .then(function (response) {
-            // console.log(response)
             if (response.role === "Employee") {
+                const employee = new Employee(response.name, response.email, response.id)
+                employeesArray.push(employee);
+                rerun();
             }
             if (response.role === "Manager") {
                 // //manager
@@ -82,8 +84,9 @@ function newEmployee() {
                     message: "What is the office number?",
                     name: "officeNumber",
                 }])
-                    .then((response) => {
-                        const manager = new Manager(response.name, response.email, response.id, response.officeNumber)
+                    .then((newResponse) => {
+                        console.log(newResponse)
+                        const manager = new Manager(response.name, response.email, response.id, newResponse.officeNumber)
                         employeesArray.push(manager);
                         rerun()
                     })
@@ -96,8 +99,8 @@ function newEmployee() {
                     message: "What is your github?",
                     name: "github",
                 }])
-                    .then((response) => {
-                        const engineer = new Engineer(response.name, response.email, response.id, response.github)
+                    .then((newResponse) => {
+                        const engineer = new Engineer(response.name, response.email, response.id, newResponse.github)
                         employeesArray.push(engineer);
                         rerun()
                     })
@@ -109,16 +112,15 @@ function newEmployee() {
                     message: "What is the name of your school?",
                     name: "school",
                 }])
-                    .then((response) => {
-                        const intern = new Intern(response.name, response.email, response.id, response.school)
+                    .then((newResponse) => {
+                        const intern = new Intern(response.name, response.email, response.id, newResponse.school)
                         employeesArray.push(intern);
                         rerun()
-                        // console.log(employeesArray)
+
                     })
             }
 
 
         })
 };
-// prompt()
-// newEmployee();
+newEmployee();
