@@ -1,3 +1,4 @@
+const Employee = require("./lib/Employee");
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
@@ -22,7 +23,6 @@ function rerun() {
         }
     ])
         .then(function (response) {
-            // console.log(response)
             if (response.add === "Yes") {
                 newEmployee()
             } else {
@@ -33,7 +33,6 @@ function rerun() {
                     if (err) {
                         return console.log(err);
                     }
-                    console.log("Success!");
 
                 })
             }
@@ -71,6 +70,7 @@ function newEmployee() {
         }
     ])
         .then(function (response) {
+
             if (response.role === "Employee") {
                 const employee = new Employee(response.name, response.email, response.id)
                 employeesArray.push(employee);
@@ -78,14 +78,12 @@ function newEmployee() {
             }
             if (response.role === "Manager") {
                 // //manager
-                console.log(response)
                 inquirer.prompt([{
                     type: "input",
                     message: "What is the office number?",
                     name: "officeNumber",
                 }])
                     .then((newResponse) => {
-                        console.log(newResponse)
                         const manager = new Manager(response.name, response.email, response.id, newResponse.officeNumber)
                         employeesArray.push(manager);
                         rerun()
